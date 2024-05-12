@@ -1,0 +1,99 @@
+<script type="text/turtle">
+
+
+
+@prefix ex: <http://example.org/>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+
+### -------- Classes
+ex:WaterSource a rdfs:Class .
+ex:WaterUsagePoint a rdfs:Class .
+ex:WaterTreatmentProcess a rdfs:Class .
+ex:WaterStorage a rdfs:Class .
+
+ex:Flowrate a rdfs:Class .
+
+### ----------- Properties
+ex:hasUsagePoint a rdf:Property .
+ex:flowsTo a rdf:Property .
+ex:collectedFrom a rdf:Property .
+
+# Flowrate Properties
+ex:hasFlowrate a rdf:Property ;
+    rdfs:domain ex:WaterStorage, ex:WaterTreatmentProcess ;
+    rdfs:range ex:Flowrate .
+
+ex:flowrateValue a rdf:Property ;
+    rdfs:domain ex:Flowrate ;
+    rdfs:range xsd:decimal .
+
+ex:flowrateUnit a rdf:Property ;
+    rdfs:domain ex:Flowrate ;
+    rdfs:range xsd:string .
+
+ex:Flowrate ex:flowrateUnit "m3/s" .  
+
+### ----------------- Instances and their types
+ex:house a ex:WaterUsagePoint .
+ex:Bath_and_Shower a ex:WaterUsagePoint .
+ex:Bathroom_sink a ex:WaterUsagePoint .
+ex:Washing_machine_and_Handwash_clothes a ex:WaterUsagePoint .
+ex:Dishwasher a ex:WaterUsagePoint .
+ex:Kitchen_sink a ex:WaterUsagePoint .
+ex:Toilet a ex:WaterUsagePoint .
+ex:Cleaning a ex:WaterUsagePoint .
+
+ex:Rainwater a ex:WaterSource .
+
+ex:Rainwater_tank a ex:WaterStorage .
+ex:Membrane_bioreactor a ex:WaterTreatmentProcess .
+ex:Purified_greywater_tank a ex:WaterStorage .
+ex:Blackwater_tank a ex:WaterStorage .
+ex:Reverse_osmosis a ex:WaterTreatmentProcess .
+ex:Potable_water_tank a ex:WaterStorage .
+ex:Inifiltration a ex:WaterTreatmentProcess .
+
+
+
+### Relationships
+ex:house ex:hasUsagePoint ex:Bath_and_Shower, ex:Bathroom_sink, ex:Washing_machine_and_Handwash_clothes, ex:Dishwasher, ex:Kitchen_sink, ex:Toilet, ex:Cleaning .
+
+ex:Bath_and_Shower ex:flowsTo ex:Membrane_bioreactor .
+ex:Bathroom_sink ex:flowsTo ex:Membrane_bioreactor .
+ex:Washing_machine_and_Handwash_clothes ex:flowsTo ex:Membrane_bioreactor .
+ex:Dishwasher ex:flowsTo ex:Membrane_bioreactor .
+ex:Kitchen_sink ex:flowsTo ex:Membrane_bioreactor .
+ex:Cleaning ex:flowsTo ex:Membrane_bioreactor .
+
+ex:Toilet ex:flowsTo ex:Blackwater_tank .
+
+ex:Membrane_bioreactor ex:flowsTo ex:Purified_greywater_tank.
+
+ex:Purified_greywater_tank ex:flowsTo ex:Bath_and_Shower, ex:Bathroom_sink, ex:Washing_machine_and_Handwash_clothes, ex:Dishwasher, ex:Toilet .
+
+ex:Rainwater_tank ex:flowsTo ex:Reverse_osmosis, ex:Gardening_reuse, ex:Cleaning .
+
+ex:Reverse_osmosis ex:flowsTo ex:Purified_greywater_tank, ex:Potable_water_tank .
+
+ex:Potable_water_tank ex:flowsTo ex:Kitchen_sink .
+
+ex:Blackwater_tank ex:flowsTo ex:Inifiltration .
+ex:Purified_greywater_tank ex:flowsTo ex:Inifiltration .
+
+ex:Rainwater_tank ex:flowsTo ex:Purified_greywater_tank . 
+
+# Linking Flowrate Instances to Water Components
+ex:Blackwater_tank ex:hasFlowrate ex:Flowrate_BT .
+ex:Purified_greywater_tank ex:hasFlowrate ex:Flowrate_PGWT .
+ex:Rainwater_tank ex:hasFlowrate ex:Flowrate_RT .
+ex:Potable_water_tank ex:hasFlowrate ex:Flowrate_PT .
+
+
+</script>
+
+
+
