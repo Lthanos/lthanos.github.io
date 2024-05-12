@@ -1,96 +1,92 @@
 <script type="text/turtle">
+    
+    @prefix housecase1: <https://lthanos.github.io#> .
+    @prefix foaf: <http://xmlns.com/foaf/0.1/>.
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+    # -------- Classes --------------
+    housecase1:WaterSource a rdfs:Class .
+    housecase1:WaterUsagePoint a rdfs:Class .
+    housecase1:WaterTreatmentProcess a rdfs:Class .
+    housecase1:WaterStorage a rdfs:Class .
+
+    housecase1:Flowrate a rdfs:Class .
+
+    # ----------- Properties ------------
+    housecase1:hasUsagePoint a rdf:Property .
+    housecase1:flowsTo a rdf:Property .
+    housecase1:collectedFrom a rdf:Property .
+
+    # Flowrate Properties 
+    housecase1:hasFlowrate a rdf:Property ;
+        rdfs:domain housecase1:WaterStorage, housecase1:WaterTreatmentProcess ;
+        rdfs:range housecase1:Flowrate .
+
+    housecase1:flowrateValue a rdf:Property ;
+        rdfs:domain housecase1:Flowrate ;
+        rdfs:range xsd:decimal .
+
+    housecase1:flowrateUnit a rdf:Property ;
+        rdfs:domain housecase1:Flowrate ;
+        rdfs:range xsd:string .
+
+    housecase1:Flowrate housecase1:flowrateUnit "m3/s" .  
+
+    # ----------------- Instances and their types ----------------
+    housecase1:house a housecase1:WaterUsagePoint .
+    housecase1:Bath_and_Shower a housecase1:WaterUsagePoint .
+    housecase1:Bathroom_sink a housecase1:WaterUsagePoint .
+    housecase1:Washing_machine_and_Handwash_clothes a housecase1:WaterUsagePoint .
+    housecase1:Dishwasher a housecase1:WaterUsagePoint .
+    housecase1:Kitchen_sink a housecase1:WaterUsagePoint .
+    housecase1:Toilet a housecase1:WaterUsagePoint .
+    housecase1:Cleaning a housecase1:WaterUsagePoint .
+
+    housecase1:Rainwater a housecase1:WaterSource .
+
+    housecase1:Rainwater_tank a housecase1:WaterStorage .
+    housecase1:Membrane_bioreactor a housecase1:WaterTreatmentProcess .
+    housecase1:Purified_greywater_tank a housecase1:WaterStorage .
+    housecase1:Blackwater_tank a housecase1:WaterStorage .
+    housecase1:Reverse_osmosis a housecase1:WaterTreatmentProcess .
+    housecase1:Potable_water_tank a housecase1:WaterStorage .
+    housecase1:Inifiltration a housecase1:WaterTreatmentProcess .
 
 
+    # ------------ Relationships -----------------
+    housecase1:house housecase1:hasUsagePoint housecase1:Bath_and_Shower, housecase1:Bathroom_sink, housecase1:Washing_machine_and_Handwash_clothes, housecase1:Dishwasher, housecase1:Kitchen_sink, housecase1:Toilet, housecase1:Cleaning .
 
-@prefix ex: <http://example.org/>.
-@prefix foaf: <http://xmlns.com/foaf/0.1/>.
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+    housecase1:Bath_and_Shower housecase1:flowsTo housecase1:Membrane_bioreactor .
+    housecase1:Bathroom_sink housecase1:flowsTo housecase1:Membrane_bioreactor .
+    housecase1:Washing_machine_and_Handwash_clothes housecase1:flowsTo housecase1:Membrane_bioreactor .
+    housecase1:Dishwasher housecase1:flowsTo housecase1:Membrane_bioreactor .
+    housecase1:Kitchen_sink housecase1:flowsTo housecase1:Membrane_bioreactor .
+    housecase1:Cleaning housecase1:flowsTo housecase1:Membrane_bioreactor .
 
+    housecase1:Toilet housecase1:flowsTo housecase1:Blackwater_tank .
 
-### -------- Classes
-ex:WaterSource a rdfs:Class .
-ex:WaterUsagePoint a rdfs:Class .
-ex:WaterTreatmentProcess a rdfs:Class .
-ex:WaterStorage a rdfs:Class .
+    housecase1:Membrane_bioreactor housecase1:flowsTo housecase1:Purified_greywater_tank.
 
-ex:Flowrate a rdfs:Class .
+    housecase1:Purified_greywater_tank housecase1:flowsTo housecase1:Bath_and_Shower, housecase1:Bathroom_sink, housecase1:Washing_machine_and_Handwash_clothes, housecase1:Dishwasher, housecase1:Toilet .
 
-### ----------- Properties
-ex:hasUsagePoint a rdf:Property .
-ex:flowsTo a rdf:Property .
-ex:collectedFrom a rdf:Property .
+    housecase1:Rainwater_tank housecase1:flowsTo housecase1:Reverse_osmosis, housecase1:Gardening_reuse, housecase1:Cleaning .
 
-# Flowrate Properties
-ex:hasFlowrate a rdf:Property ;
-    rdfs:domain ex:WaterStorage, ex:WaterTreatmentProcess ;
-    rdfs:range ex:Flowrate .
+    housecase1:Reverse_osmosis housecase1:flowsTo housecase1:Purified_greywater_tank, housecase1:Potable_water_tank .
 
-ex:flowrateValue a rdf:Property ;
-    rdfs:domain ex:Flowrate ;
-    rdfs:range xsd:decimal .
+    housecase1:Potable_water_tank housecase1:flowsTo housecase1:Kitchen_sink .
 
-ex:flowrateUnit a rdf:Property ;
-    rdfs:domain ex:Flowrate ;
-    rdfs:range xsd:string .
+    housecase1:Blackwater_tank housecase1:flowsTo housecase1:Inifiltration .
+    housecase1:Purified_greywater_tank housecase1:flowsTo housecase1:Inifiltration .
 
-ex:Flowrate ex:flowrateUnit "m3/s" .  
+    housecase1:Rainwater_tank housecase1:flowsTo housecase1:Purified_greywater_tank . 
 
-### ----------------- Instances and their types
-ex:house a ex:WaterUsagePoint .
-ex:Bath_and_Shower a ex:WaterUsagePoint .
-ex:Bathroom_sink a ex:WaterUsagePoint .
-ex:Washing_machine_and_Handwash_clothes a ex:WaterUsagePoint .
-ex:Dishwasher a ex:WaterUsagePoint .
-ex:Kitchen_sink a ex:WaterUsagePoint .
-ex:Toilet a ex:WaterUsagePoint .
-ex:Cleaning a ex:WaterUsagePoint .
-
-ex:Rainwater a ex:WaterSource .
-
-ex:Rainwater_tank a ex:WaterStorage .
-ex:Membrane_bioreactor a ex:WaterTreatmentProcess .
-ex:Purified_greywater_tank a ex:WaterStorage .
-ex:Blackwater_tank a ex:WaterStorage .
-ex:Reverse_osmosis a ex:WaterTreatmentProcess .
-ex:Potable_water_tank a ex:WaterStorage .
-ex:Inifiltration a ex:WaterTreatmentProcess .
-
-
-
-### Relationships
-ex:house ex:hasUsagePoint ex:Bath_and_Shower, ex:Bathroom_sink, ex:Washing_machine_and_Handwash_clothes, ex:Dishwasher, ex:Kitchen_sink, ex:Toilet, ex:Cleaning .
-
-ex:Bath_and_Shower ex:flowsTo ex:Membrane_bioreactor .
-ex:Bathroom_sink ex:flowsTo ex:Membrane_bioreactor .
-ex:Washing_machine_and_Handwash_clothes ex:flowsTo ex:Membrane_bioreactor .
-ex:Dishwasher ex:flowsTo ex:Membrane_bioreactor .
-ex:Kitchen_sink ex:flowsTo ex:Membrane_bioreactor .
-ex:Cleaning ex:flowsTo ex:Membrane_bioreactor .
-
-ex:Toilet ex:flowsTo ex:Blackwater_tank .
-
-ex:Membrane_bioreactor ex:flowsTo ex:Purified_greywater_tank.
-
-ex:Purified_greywater_tank ex:flowsTo ex:Bath_and_Shower, ex:Bathroom_sink, ex:Washing_machine_and_Handwash_clothes, ex:Dishwasher, ex:Toilet .
-
-ex:Rainwater_tank ex:flowsTo ex:Reverse_osmosis, ex:Gardening_reuse, ex:Cleaning .
-
-ex:Reverse_osmosis ex:flowsTo ex:Purified_greywater_tank, ex:Potable_water_tank .
-
-ex:Potable_water_tank ex:flowsTo ex:Kitchen_sink .
-
-ex:Blackwater_tank ex:flowsTo ex:Inifiltration .
-ex:Purified_greywater_tank ex:flowsTo ex:Inifiltration .
-
-ex:Rainwater_tank ex:flowsTo ex:Purified_greywater_tank . 
-
-# Linking Flowrate Instances to Water Components
-ex:Blackwater_tank ex:hasFlowrate ex:Flowrate_BT .
-ex:Purified_greywater_tank ex:hasFlowrate ex:Flowrate_PGWT .
-ex:Rainwater_tank ex:hasFlowrate ex:Flowrate_RT .
-ex:Potable_water_tank ex:hasFlowrate ex:Flowrate_PT .
+    # Linking Flowrate Instances to Water Components 
+    housecase1:Blackwater_tank housecase1:hasFlowrate housecase1:Flowrate_BT .
+    housecase1:Purified_greywater_tank housecase1:hasFlowrate housecase1:Flowrate_PGWT .
+    housecase1:Rainwater_tank housecase1:hasFlowrate housecase1:Flowrate_RT .
+    housecase1:Potable_water_tank housecase1:hasFlowrate housecase1:Flowrate_PT .
 
 
 </script>
