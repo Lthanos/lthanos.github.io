@@ -1,0 +1,68 @@
+@prefix housecase1: <https://lthanos.github.io/#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+# -------- Classes --------------
+housecase1:WaterSource a rdfs:Class.
+housecase1:WaterUsagePoint a rdfs:Class.
+housecase1:WaterTreatmentProcess a rdfs:Class.
+housecase1:WaterStorage a rdfs:Class.
+housecase1:Flowrate a rdfs:Class.
+# ----------- Properties ------------
+housecase1:hasUsagePoint a rdf:Property.
+housecase1:flowsTo a rdf:Property.
+housecase1:collectedFrom a rdf:Property.
+# Flowrate Properties
+housecase1:hasFlowrate a rdf:Property;
+    rdfs:domain housecase1:WaterStorage, housecase1:WaterTreatmentProcess;
+    rdfs:range housecase1:Flowrate.
+housecase1:flowrateValue a rdf:Property;
+    rdfs:domain housecase1:Flowrate;
+    rdfs:range xsd:decimal.
+housecase1:flowrateUnit a rdf:Property;
+    rdfs:domain housecase1:Flowrate;
+    rdfs:range xsd:string.
+housecase1:Flowrate housecase1:flowrateUnit "m3/s".
+# ----------------- Instances and their types ---------------
+housecase1:house a housecase1:WaterUsagePoint.
+housecase1:Bath_and_Shower a housecase1:WaterUsagePoint.
+housecase1:Bathroom_sink a housecase1:WaterUsagePoint.
+housecase1:Washing_machine_and_Handwash_clothes a housecase1:WaterUsagePoint.
+housecase1:Dishwasher a housecase1:WaterUsagePoint.
+housecase1:Kitchen_sink a housecase1:WaterUsagePoint.
+housecase1:Toilet a housecase1:WaterUsagePoint.
+housecase1:Cleaning a housecase1:WaterUsagePoint.
+housecase1:Rainwater a housecase1:WaterSource.
+housecase1:Rainwater_tank a housecase1:WaterStorage.
+housecase1:Membrane_bioreactor a housecase1:WaterTreatmentProcess.
+housecase1:Purified_greywater_tank a housecase1:WaterStorage .
+housecase1:Blackwater_tank a housecase1:WaterStorage.
+housecase1:Reverse_osmosis a housecase1:WaterTreatmentProcess.
+housecase1:Potable_water_tank a housecase1:WaterStorage.
+housecase1:Inifiltration a housecase1:WaterTreatmentProcess.
+# ------------ Relationships -----------------
+housecase1:house housecase1:hasUsagePoint housecase1:Bath_and_Shower, housecase1:Bathroom_sink, housecase1:Washing_machine_and_Handwash_clothes, housecase1:Dishwasher, housecase1:Kitchen_sink, housecase1:Toilet, housecase1:Cleaning.
+housecase1:Bath_and_Shower housecase1:flowsTo housecase1:Membrane_bioreactor.
+housecase1:Bathroom_sink housecase1:flowsTo housecase1:Membrane_bioreactor.
+housecase1:Washing_machine_and_Handwash_clothes housecase1:flowsTo housecase1:Membrane_bioreactor.
+housecase1:Dishwasher housecase1:flowsTo housecase1:Membrane_bioreactor.
+housecase1:Kitchen_sink housecase1:flowsTo housecase1:Membrane_bioreactor.
+housecase1:Cleaning housecase1:flowsTo housecase1:Membrane_bioreactor.
+housecase1:Toilet housecase1:flowsTo housecase1:Blackwater_tank.
+housecase1:Membrane_bioreactor housecase1:flowsTo housecase1:Purified_greywater_tank.
+housecase1:Purified_greywater_tank housecase1:flowsTo housecase1:Bath_and_Shower, housecase1:Bathroom_sink, housecase1:Washing_machine_and_Handwash_clothes, housecase1:Dishwasher, housecase1:Toilet.
+housecase1:Rainwater_tank housecase1:flowsTo housecase1:Reverse_osmosis, housecase1:Gardening_reuse, housecase1:Cleaning.
+housecase1:Reverse_osmosis housecase1:flowsTo housecase1:Purified_greywater_tank, housecase1:Potable_water_tank.
+housecase1:Potable_water_tank housecase1:flowsTo housecase1:Kitchen_sink.
+housecase1:Blackwater_tank housecase1:flowsTo housecase1:Inifiltration.
+housecase1:Purified_greywater_tank housecase1:flowsTo housecase1:Inifiltration.
+housecase1:Rainwater_tank housecase1:flowsTo housecase1:Purified_greywater_tank.
+# Linking Flowrate Instances to Water Components 
+housecase1:Blackwater_tank housecase1:hasFlowrate housecase1:Flowrate_BT.
+housecase1:Purified_greywater_tank housecase1:hasFlowrate housecase1:Flowrate_PGWT.
+housecase1:Rainwater_tank housecase1:hasFlowrate housecase1:Flowrate_RT.
+housecase1:Potable_water_tank housecase1:hasFlowrate housecase1:Flowrate_PT.
+
+
+
