@@ -2,6 +2,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 # -------- Classes --------------
 housecase1:WaterSource a rdfs:Class.
 housecase1:WaterUsagePoint a rdfs:Class.
@@ -22,7 +23,16 @@ housecase1:flowrateValue a rdf:Property;
 housecase1:flowrateUnit a rdf:Property;
     rdfs:domain housecase1:Flowrate;
     rdfs:range xsd:string.
-housecase1:Flowrate housecase1:flowrateUnit "m3/s".
+
+
+
+housecase1:Flowrate a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty housecase1:flowrateUnit ;
+        owl:hasValue "m3/s"
+    ] .
+
 # ----------------- Instances and their types ---------------
 housecase1:house a housecase1:WaterUsagePoint.
 housecase1:Bath_and_Shower a housecase1:WaterUsagePoint.
