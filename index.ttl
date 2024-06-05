@@ -2,18 +2,28 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
 # -------- Classes --------------
 housecase1:WaterSource a rdfs:Class.
 housecase1:WaterUsagePoint a rdfs:Class.
 housecase1:WaterTreatmentProcess a rdfs:Class.
 housecase1:WaterStorage a rdfs:Class.
 housecase1:Flowrate a rdfs:Class.
+housecase1:Coefficient a rdfs:Class.
+
 # ----------- Properties ------------
 housecase1:hasUsagePoint a rdf:Property.
 housecase1:flowsTo a rdf:Property.
 housecase1:collectedFrom a rdf:Property.
-# Flowrate Properties
+housecase1:hasCoefficient a rdf:Property;
+    rdfs:domain housecase1:WaterStorage, housecase1:WaterTreatmentProcess;
+    rdfs:range housecase1:Coefficient.
+housecase1:hasCapacity a rdf:Property;
+    rdfs:domain housecase1:WaterStorage;
+    rdfs:range xsd:decimal.
+housecase1:hasThreshold a rdf:Property;
+    rdfs:domain housecase1:WaterStorage;
+    rdfs:range xsd:decimal.
 housecase1:hasFlowrate a rdf:Property;
     rdfs:domain housecase1:WaterStorage, housecase1:WaterTreatmentProcess;
     rdfs:range housecase1:Flowrate.
@@ -24,17 +34,10 @@ housecase1:flowrateUnit a rdf:Property;
     rdfs:domain housecase1:Flowrate;
     rdfs:range xsd:string.
 
-
-
-housecase1:Flowrate a owl:Class ;
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:onProperty housecase1:flowrateUnit ;
-        owl:hasValue "m3/s"
-    ] .
+housecase1:Flowrate housecase1:flowrateUnit "m3/s" . 
 
 # ----------------- Instances and their types ---------------
-housecase1:house a housecase1:WaterUsagePoint.
+# Water usage points
 housecase1:Bath_and_Shower a housecase1:WaterUsagePoint.
 housecase1:Bathroom_sink a housecase1:WaterUsagePoint.
 housecase1:Washing_machine_and_Handwash_clothes a housecase1:WaterUsagePoint.
@@ -42,15 +45,38 @@ housecase1:Dishwasher a housecase1:WaterUsagePoint.
 housecase1:Kitchen_sink a housecase1:WaterUsagePoint.
 housecase1:Toilet a housecase1:WaterUsagePoint.
 housecase1:Cleaning a housecase1:WaterUsagePoint.
+housecase1:Gardening_reuse a housecase1:WaterUsagePoint.
+
+# Water sources and storage
 housecase1:Rainwater a housecase1:WaterSource.
 housecase1:Rainwater_tank a housecase1:WaterStorage.
-housecase1:Membrane_bioreactor a housecase1:WaterTreatmentProcess.
-housecase1:Purified_greywater_tank a housecase1:WaterStorage .
-housecase1:Blackwater_tank a housecase1:WaterStorage.
-housecase1:Reverse_osmosis a housecase1:WaterTreatmentProcess.
 housecase1:Potable_water_tank a housecase1:WaterStorage.
-housecase1:Inifiltration a housecase1:WaterTreatmentProcess.
-# ------------ Relationships -----------------
+housecase1:Purified_greywater_tank a housecase1:WaterStorage.
+housecase1:Blackwater_tank a housecase1:WaterStorage.
+
+# Water treatment processes
+housecase1:Membrane_bioreactor a housecase1:WaterTreatmentProcess;
+    housecase1:hasCoefficient housecase1:Coefficient_MBR_rec.
+housecase1:Reverse_osmosis a housecase1:WaterTreatmentProcess;
+    housecase1:hasCoefficient housecase1:Coefficient_RO_rec.
+housecase1:Infiltration a housecase1:WaterTreatmentProcess.
+
+# Coefficients
+housecase1:Coefficient_RO_rec a housecase1:Coefficient;
+    housecase1:flowrateValue "0.8"^^xsd:decimal.
+housecase1:Coefficient_MBR_rec a housecase1:Coefficient;
+    housecase1:flowrateValue "0.9"^^xsd:decimal.
+housecase1:Coefficient_Roof_Area a housecase1:Coefficient;
+    housecase1:flowrateValue "106"^^xsd:decimal.
+
+# Capacity and thresholds
+housecase1:Rainwater_tank housecase1:hasCapacity "10"^^xsd:decimal;
+                           housecase1:hasThreshold "0.5"^^xsd:decimal.
+housecase1:Potable_water_tank housecase1:hasCapacity "1"^^xsd:decimal;
+                              housecase1:hasThreshold "0.95"^^xsd:decimal.
+
+
+# ----------------- Relationships --------------
 housecase1:house housecase1:hasUsagePoint housecase1:Bath_and_Shower, housecase1:Bathroom_sink, housecase1:Washing_machine_and_Handwash_clothes, housecase1:Dishwasher, housecase1:Kitchen_sink, housecase1:Toilet, housecase1:Cleaning.
 housecase1:Bath_and_Shower housecase1:flowsTo housecase1:Membrane_bioreactor.
 housecase1:Bathroom_sink housecase1:flowsTo housecase1:Membrane_bioreactor.
@@ -64,14 +90,12 @@ housecase1:Purified_greywater_tank housecase1:flowsTo housecase1:Bath_and_Shower
 housecase1:Rainwater_tank housecase1:flowsTo housecase1:Reverse_osmosis, housecase1:Gardening_reuse, housecase1:Cleaning.
 housecase1:Reverse_osmosis housecase1:flowsTo housecase1:Purified_greywater_tank, housecase1:Potable_water_tank.
 housecase1:Potable_water_tank housecase1:flowsTo housecase1:Kitchen_sink.
-housecase1:Blackwater_tank housecase1:flowsTo housecase1:Inifiltration.
-housecase1:Purified_greywater_tank housecase1:flowsTo housecase1:Inifiltration.
+housecase1:Blackwater_tank housecase1:flowsTo housecase1:Infiltration.
+housecase1:Purified_greywater_tank housecase1:flowsTo housecase1:Infiltration.
 housecase1:Rainwater_tank housecase1:flowsTo housecase1:Purified_greywater_tank.
+
 # Linking Flowrate Instances to Water Components 
 housecase1:Blackwater_tank housecase1:hasFlowrate housecase1:Flowrate_BT.
 housecase1:Purified_greywater_tank housecase1:hasFlowrate housecase1:Flowrate_PGWT.
 housecase1:Rainwater_tank housecase1:hasFlowrate housecase1:Flowrate_RT.
 housecase1:Potable_water_tank housecase1:hasFlowrate housecase1:Flowrate_PT.
-
-
-
