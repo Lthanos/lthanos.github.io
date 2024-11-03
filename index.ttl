@@ -2,6 +2,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
 
 # -------- Classes --------------
 housecase1:WaterSource a rdfs:Class.
@@ -99,3 +101,18 @@ housecase1:Blackwater_tank housecase1:hasFlowrate housecase1:Flowrate_BT.
 housecase1:Purified_greywater_tank housecase1:hasFlowrate housecase1:Flowrate_PGWT.
 housecase1:Rainwater_tank housecase1:hasFlowrate housecase1:Flowrate_RT.
 housecase1:Potable_water_tank housecase1:hasFlowrate housecase1:Flowrate_PT.
+
+
+#----------------------Time and Files related triples ------------------------------
+# Define the Excel file as a data source
+housecase1:Blackwater_DataFile a housecase1:DataFile ;
+    rdfs:label "Blackwater Tank Data File (Excel)" ;
+    rdfs:comment "Data file containing flow rate measurements for the Blackwater tank" ;
+    time:hasTime housecase1:SaveTime_2023_01_01 ;
+
+# Define the timestamp for the last save time of the file
+housecase1:SaveTime_2023_01_01 a time:Instant ;
+    time:inXSDDateTime "2023-01-01T12:00:00Z"^^xsd:dateTime .
+
+# Link Blackwater Tank to the data file as the source of its data
+housecase1:Blackwater_tank dcterms:source housecase1:Blackwater_DataFile .

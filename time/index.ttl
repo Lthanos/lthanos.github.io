@@ -1,0 +1,22 @@
+@prefix housecase1: <https://lthanos.github.io/index.ttl#>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+
+# Define the Excel file as a data source
+housecase1:Blackwater_DataFile a housecase1:DataFile ;
+    rdfs:label "Blackwater Tank Data File (Excel)" ;
+    rdfs:comment "Data file containing flow rate measurements for the Blackwater tank" ;
+    time:hasTime housecase1:SaveTime_2023_01_01 ;
+    dcterms:format "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ;
+    dcterms:title "Blackwater Data Excel File" .
+
+# Define the timestamp for the last save time of the file
+housecase1:SaveTime_2023_01_01 a time:Instant ;
+    time:inXSDDateTime "2023-01-01T12:00:00Z"^^xsd:dateTime .
+
+# Link Blackwater Tank to the data file as the source of its data
+housecase1:Blackwater_tank dcterms:source housecase1:Blackwater_DataFile .
