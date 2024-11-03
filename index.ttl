@@ -108,10 +108,10 @@ housecase1:Potable_water_tank housecase1:hasFlowrate housecase1:Flowrate_PT.
 housecase1:Blackwater_DataFile a housecase1:DataFile ;
     rdfs:label "Blackwater Tank Data File (Excel)" ;
     rdfs:comment "Data file containing flow rate measurements for the Blackwater tank" ;
-    time:hasTime housecase1:SaveTime_2023_01_01 ;
+    time:hasTime housecase1:SaveTime_BWT .
 
 # Define the timestamp for the last save time of the file
-housecase1:SaveTime_2023_01_01 a time:Instant ;
+housecase1:SaveTime_BWT a time:Instant ;
     time:inXSDDateTime "2023-01-01T12:00:00Z"^^xsd:dateTime .
 
 # Link Blackwater Tank to the data file as the source of its data
